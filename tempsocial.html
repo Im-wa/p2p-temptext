@@ -7,41 +7,92 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6fa;
+      background: #111;
       margin: 0;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
+      align-items: flex-start;
+      color: #fff;
     }
-    h2 {
-      margin-top: 2em;
-      color: #333;
-      font-weight: 600;
-      letter-spacing: 1px;
+    #user-list-container {
+      width: 180px;
+      min-height: 100vh;
+      background: #181818;
+      border-right: 1px solid #333;
+      padding: 1.5em 0.7em 1em 0.7em;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+    }
+    #user-list-title {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 0.5em;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    #user-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+    }
+    #user-list li {
+      background: #222;
+      color: #fff;
+      border-radius: 6px;
+      padding: 0.4em 0.7em;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 0.98em;
+      word-break: break-all;
+    }
+    #user-list li:hover {
+      background: #444;
     }
     #main-container {
-      background: #fff;
+      background: #222;
       border-radius: 10px;
-      box-shadow: 0 2px 8px #e0e7ef;
+      box-shadow: 0 2px 8px #000;
       padding: 1.2em 1.2em 1em 1.2em;
-      margin-top: 2em;
+      margin: 2em auto 0 2em;
       width: 100%;
       max-width: 350px;
       display: flex;
       flex-direction: column;
       gap: 1em;
     }
+    h2 {
+      margin-top: 2em;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-align: center;
+    }
     #my-id {
       font-weight: bold;
-      color: #3b82f6;
-      background: #f1f5ff;
+      color: #fff;
+      background: #333;
       padding: 0.4em 0.7em;
       border-radius: 6px;
-      margin-bottom: 0.5em;
+      margin-bottom: 0.2em;
       text-align: center;
       font-size: 1em;
       letter-spacing: 0.5px;
+    }
+    #connected-to {
+      color: #bbb;
+      background: #181818;
+      border-radius: 6px;
+      padding: 0.2em 0.7em;
+      text-align: center;
+      font-size: 0.97em;
+      margin-bottom: 0.5em;
+      min-height: 1.5em;
     }
     #connect-section {
       display: flex;
@@ -52,14 +103,15 @@
     #peer-id-input {
       flex: 1;
       padding: 0.5em 0.7em;
-      border: 1px solid #dbeafe;
+      border: 1px solid #444;
       border-radius: 6px;
       font-size: 1em;
-      background: #f8fafc;
+      background: #181818;
+      color: #fff;
     }
     #connect-btn {
-      background: #3b82f6;
-      color: #fff;
+      background: #fff;
+      color: #111;
       border: none;
       border-radius: 6px;
       padding: 0.5em 1em;
@@ -68,11 +120,27 @@
       cursor: pointer;
     }
     #connect-btn:hover {
-      background: #2563eb;
+      background: #bbb;
+    }
+    #clear-btn {
+      background: #fff;
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4em 1em;
+      font-size: 0.98em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 0.5em;
+      margin-top: -0.3em;
+      align-self: flex-end;
+    }
+    #clear-btn:hover {
+      background: #bbb;
     }
     #messages {
-      border: 1px solid #dbeafe;
-      background: #f8fafc;
+      border: 1px solid #444;
+      background: #181818;
       border-radius: 8px;
       height: 220px;
       overflow-y: auto;
@@ -82,6 +150,7 @@
       flex-direction: column;
       gap: 0.4em;
       font-size: 0.98em;
+      color: #fff;
     }
     .msg {
       display: flex;
@@ -100,23 +169,23 @@
       word-break: break-word;
     }
     .msg.you .bubble {
-      background: #3b82f6;
-      color: #fff;
+      background: #fff;
+      color: #111;
     }
     .msg.friend .bubble {
-      background: #dbeafe;
-      color: #222;
+      background: #444;
+      color: #fff;
     }
     .msg.system .bubble {
-      background: #f1f5ff;
-      color: #3b82f6;
+      background: #222;
+      color: #bbb;
       font-style: italic;
       text-align: center;
       font-size: 0.97em;
     }
     .meta {
       font-size: 0.8em;
-      color: #a5b4fc;
+      color: #888;
       margin-top: 0.1em;
       text-align: right;
       width: 100%;
@@ -129,14 +198,15 @@
     #msg-input {
       flex: 1;
       padding: 0.5em 0.7em;
-      border: 1px solid #dbeafe;
+      border: 1px solid #444;
       border-radius: 6px;
       font-size: 1em;
-      background: #f8fafc;
+      background: #181818;
+      color: #fff;
     }
     #msg-form button {
-      background: #3b82f6;
-      color: #fff;
+      background: #fff;
+      color: #111;
       border: none;
       border-radius: 6px;
       padding: 0.5em 1em;
@@ -145,7 +215,26 @@
       cursor: pointer;
     }
     #msg-form button:hover {
-      background: #2563eb;
+      background: #bbb;
+    }
+    @media (max-width: 700px) {
+      body {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #user-list-container {
+        width: 100vw;
+        min-height: unset;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0.7em 0.2em 0.7em 0.2em;
+      }
+      #main-container {
+        margin: 0 auto;
+        max-width: 98vw;
+      }
     }
     @media (max-width: 500px) {
       #main-container {
@@ -159,13 +248,21 @@
   </style>
 </head>
 <body>
-  <h2>P2P temptext</h2>
+  <div id="user-list-container">
+    <div id="user-list-title">User History</div>
+    <ul id="user-list">
+      <!-- User IDs will be listed here -->
+    </ul>
+  </div>
   <div id="main-container">
+    <h2>P2P temptext</h2>
     <div id="my-id"></div>
+    <div id="connected-to"></div>
     <div id="connect-section">
       <input id="peer-id-input" placeholder="Friend's 6-digit ID">
       <button id="connect-btn">Connect</button>
     </div>
+    <button id="clear-btn" type="button">Clear Chat</button>
     <div id="messages"></div>
     <form id="msg-form" autocomplete="off">
       <input id="msg-input" placeholder="Type a message..." required>
@@ -173,25 +270,87 @@
     </form>
   </div>
   <script>
+    // --- User history feature ---
+    let userHistory = [];
+
+    function saveUserHistory() {
+      localStorage.setItem('userHistory', JSON.stringify(userHistory));
+    }
+
+    function loadUserHistory(myId) {
+      try {
+        userHistory = JSON.parse(localStorage.getItem('userHistory')) || [];
+      } catch {
+        userHistory = [];
+      }
+      // Remove own ID if present
+      userHistory = userHistory.filter(id => id !== myId);
+      updateUserList();
+    }
+
+    function addToUserHistory(id, myId) {
+      if (id === myId) return;
+      if (!userHistory.includes(id)) {
+        userHistory.unshift(id);
+        if (userHistory.length > 10) userHistory = userHistory.slice(0, 10);
+        saveUserHistory();
+        updateUserList();
+      }
+    }
+
+    function updateUserList() {
+      const ul = document.getElementById('user-list');
+      ul.innerHTML = '';
+      if (userHistory.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No history yet';
+        li.style.color = '#888';
+        ul.appendChild(li);
+        return;
+      }
+      userHistory.forEach(id => {
+        const li = document.createElement('li');
+        li.textContent = id;
+        li.onclick = () => {
+          document.getElementById('peer-id-input').value = id;
+        };
+        ul.appendChild(li);
+      });
+    }
+
     // Generate a 6-digit numeric PeerJS ID
     function generateSixDigitId() {
       return Math.floor(100000 + Math.random() * 900000).toString();
     }
 
-    // Use a custom 6-digit ID
-    const myShortId = generateSixDigitId();
+    // Use a persistent 6-digit ID
+    let myShortId = localStorage.getItem('myShortId');
+    if (!myShortId) {
+      myShortId = generateSixDigitId();
+      localStorage.setItem('myShortId', myShortId);
+    }
     const peer = new Peer(myShortId, { debug: 2 });
     let conn = null;
+    let connectedPeerId = null;
 
-    // Show own Peer ID
+    // Show own Peer ID and load user history
     peer.on('open', id => {
       document.getElementById('my-id').textContent = 'Your ID: ' + id;
+      document.getElementById('connected-to').textContent = 'Not connected';
+      loadUserHistory(id);
     });
 
     // Handle incoming connections
     peer.on('connection', connection => {
+      // Accept the connection and set up handlers
+      if (conn && conn.open) {
+        conn.close();
+      }
       conn = connection;
-      setupConnection();
+      connectedPeerId = connection.peer;
+      addToUserHistory(connectedPeerId, myShortId);
+      updateConnectedTo();
+      setupConnection(conn);
     });
 
     // Connect to another peer
@@ -201,21 +360,35 @@
         alert('Please enter a valid 6-digit ID.');
         return;
       }
-      conn = peer.connect(peerId);
-      setupConnection();
+      if (conn && conn.open) {
+        conn.close();
+      }
+      conn = peer.connect(peerId, { reliable: true });
+      connectedPeerId = peerId;
+      addToUserHistory(peerId, myShortId);
+      updateConnectedTo();
+      setupConnection(conn);
     };
 
     // Setup connection event handlers
-    function setupConnection() {
-      if (!conn) return;
-      conn.on('open', () => {
+    function setupConnection(connection) {
+      if (!connection) return;
+      connection.on('open', () => {
         appendMessage('System', 'Connected!', 'system');
+        updateConnectedTo();
       });
-      conn.on('data', data => {
+      connection.on('data', data => {
         appendMessage('Friend', data, 'friend');
       });
-      conn.on('close', () => {
+      connection.on('close', () => {
         appendMessage('System', 'Connection closed.', 'system');
+        connectedPeerId = null;
+        updateConnectedTo();
+      });
+      connection.on('error', err => {
+        appendMessage('System', 'Connection error: ' + err, 'system');
+        connectedPeerId = null;
+        updateConnectedTo();
       });
     }
 
@@ -247,6 +420,21 @@
         setTimeout(() => {
           div.remove();
         }, 10 * 60 * 1000); // 10 minutes
+      }
+    }
+
+    // Clear chat functionality
+    document.getElementById('clear-btn').onclick = () => {
+      document.getElementById('messages').innerHTML = '';
+    };
+
+    // Update connected user display
+    function updateConnectedTo() {
+      const el = document.getElementById('connected-to');
+      if (connectedPeerId) {
+        el.textContent = 'Connected to: ' + connectedPeerId;
+      } else {
+        el.textContent = 'Not connected';
       }
     }
   </script>
